@@ -73,7 +73,7 @@ const Carousel = () => {
                 className="d-block w-100"
                 alt={movie.title}
                 style={{
-                  height: '300px',
+                  height: '350px',
                   width: '100%',
                 }}
               />

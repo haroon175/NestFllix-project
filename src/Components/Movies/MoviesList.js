@@ -12,6 +12,7 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../Carousel/Carousel';
+import MovieCarousels from './MovieCarousels';
 
 
 const MoviesList = () => {
@@ -101,6 +102,7 @@ const MoviesList = () => {
   return (
     <div>
         <Carousel/>
+        <MovieCarousels/>
       <Container>
         <Typography
           variant="h4"
