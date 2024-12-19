@@ -17,18 +17,16 @@ import {
   Drawer,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import CloseIcon from "@mui/icons-material/Close";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../nest.png";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-const NGROK_URL = "https://coaches-kerry-import-handed.trycloudflare.com";
+
+const NGROK_URL = "https://memories-downloaded-evanescence-goals.trycloudflare.com";
 
 const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(false);
   const [genres, setGenres] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,12 +37,12 @@ const Navbar = () => {
 
   const theme = createTheme({
     palette: {
-      mode: darkMode ? "dark" : "light",
+      mode: "dark",
       primary: {
-        main: darkMode ? "#90caf9" : "#1976d2",
+        main: "#90caf9",
       },
       background: {
-        default: darkMode ? "#121212" : "#f4f6f8",
+        default: "#121212",
       },
     },
   });
@@ -74,7 +72,6 @@ const Navbar = () => {
   const handleCategoryClick = (category, id) => {
     setActiveCategory(category);
     setDrawerOpen(false);
-
     navigate(`/genre/${id}`);
   };
 
@@ -103,38 +100,58 @@ const Navbar = () => {
 
   const drawerContent = (
     <Box
-      sx={{ width: 250, padding: 2 }}
+      sx={{
+        backgroundColor: 'black',
+        width: 250,
+        padding: 2,
+        borderRight: '5px solid #950101',
+      }}
       role="presentation"
     >
-      <img
-              src={Logo}
-              alt="logo"
-              style={{ height: "50px", width: "auto", objectFit: "contain", cursor: 'pointer' }}
-              onClick={() => {
-                navigate('/')
-                toggleDrawer(); 
-              }}
-              
-            />
+      <div
+        style={{
+          position: 'sticky',
+          top: 0, // Ensures the sticky area sticks at the top
+          background: 'black', // Prevents content overlap with sticky area
+          zIndex: 1, // Ensures it stays above other content
+          paddingBottom: 8, // Adds spacing below the sticky content
+        }}
+      >
+        <img
+          src={Logo}
+          alt="logo"
+          style={{
+            height: "50px",
+            width: "auto",
+            objectFit: "contain",
+            cursor: 'pointer',
+          }}
+          onClick={() => {
+            navigate('/');
+            toggleDrawer();
+          }}
+        />
+      </div>
       <List>
         {genres.map((genre) => (
           <ListItem
             key={genre.id}
             onClick={() => handleCategoryClick(genre.name, genre.id)}
           >
-            <ListItemText primary={genre.name} />
+            <ListItemText primary={genre.name} sx={{ fontFamily: 'Bebas Neue' }} />
           </ListItem>
         ))}
       </List>
     </Box>
   );
 
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppBar
         position="sticky"
-        sx={{ backgroundColor: darkMode ? "black" : "white" }}
+        sx={{ backgroundColor: "black" }}
       >
         <Toolbar>
           {/* Logo */}
@@ -149,7 +166,6 @@ const Navbar = () => {
 
           {/* Search Bar */}
           <Box sx={{ flexGrow: 2 }}>
-
             <TextField
               variant="outlined"
               size="small"
@@ -168,6 +184,7 @@ const Navbar = () => {
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
                     borderColor: '#950101',
+                    borderRadius: '20px',
                   },
                   '&:hover fieldset': {
                     borderColor: '#950101',
@@ -187,7 +204,7 @@ const Navbar = () => {
                 sx={{
                   position: "absolute",
                   zIndex: 1,
-                  backgroundColor: darkMode ? "#333" : "#fff",
+                  backgroundColor: "#333",
                   borderRadius: 1,
                   boxShadow: 3,
                   width: '270px',
@@ -200,7 +217,7 @@ const Navbar = () => {
                     <ListItem key={movie.id} onClick={() => handleMovieClick(movie.id)}>
                       <ListItemText
                         primary={movie.title}
-                        sx={{ color: darkMode ? 'white' : 'black', cursor: 'pointer' }}
+                        sx={{ color: 'white', cursor: 'pointer' }}
                       />
                     </ListItem>
                   ))}
@@ -214,25 +231,38 @@ const Navbar = () => {
             edge="end"
             color="inherit"
             onClick={toggleDrawer}
-            sx={{ display: { xs: 'block', md: 'none' }, color: darkMode ? "yellow" : "black" }}
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              color: "#950101",
+              alignItems: "center",
+              gap: 0.5, // Add spacing between the icon and text
+            }}
           >
-            {drawerOpen ? <CloseIcon sx={{ color: "#950101" }} /> : <WidgetsIcon sx={{ color: "#950101" }} />}
+            {drawerOpen ? (
+              <CloseIcon sx={{ color: "#950101" }} />
+            ) : (
+              <>
+                <WidgetsIcon sx={{ color: "#950101" }} />
+                <span style={{ fontSize: "0.75rem", color: "#950101" }}>Categories</span>
+              </>
+            )}
           </IconButton>
 
-          {/* Button for Laptop screens */}
 
+          {/* Button for Laptop screens */}
           <Button
             variant="outlined"
             onClick={handleMenuClick}
             sx={{
               display: { xs: 'none', md: 'block' },
-              color: darkMode ? '#950101' : '#950101',
-              borderColor: darkMode ? '#950101' : '#950101', 
+              color: '#950101',
+              borderColor: '#950101',
               fontSize: '14px',
               '&:hover': {
-                borderColor: darkMode ? '#950101' : '#950101', 
+                borderColor: '#950101',
               },
-              marginRight:'5px'
+              marginRight: '5px',
+              borderRadius:'20px'
             }}
           >
             <ArrowDropDownIcon sx={{ marginRight: '5px' }} />
@@ -247,29 +277,14 @@ const Navbar = () => {
               <MenuItem
                 key={genre.id}
                 onClick={() => {
-                  handleCategoryClick(genre.name, genre.id); 
-                  handleMenuClose(); 
+                  handleCategoryClick(genre.name, genre.id);
+                  handleMenuClose();
                 }}
-
               >
                 {genre.name}
               </MenuItem>
             ))}
           </Menu>
-
-          {/* Theme Toggle Icon */}
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={() => setDarkMode((prevMode) => !prevMode)}
-            sx={{ color: darkMode ? "yellow" : "black" }}
-          >
-            {darkMode ? (
-              <Brightness7Icon sx={{ color: "#950101" }} />
-            ) : (
-              <Brightness4Icon sx={{ color: "#950101" }} />
-            )}
-          </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -278,6 +293,7 @@ const Navbar = () => {
         anchor="left"
         open={drawerOpen}
         onClose={toggleDrawer}
+
       >
         {drawerContent}
       </Drawer>

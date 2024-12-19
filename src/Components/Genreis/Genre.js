@@ -9,7 +9,7 @@ const Genre = () => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [genreName, setGenreName] = useState("");
-  const NGROK_URL = "https://coaches-kerry-import-handed.trycloudflare.com";
+  const NGROK_URL = "https://memories-downloaded-evanescence-goals.trycloudflare.com";
 
   useEffect(() => {
     const fetchMovies = async () => {

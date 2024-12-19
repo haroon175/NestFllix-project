@@ -7,7 +7,7 @@ const VideoPlay = () => {
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const [videoSrc, setVideoSrc] = useState(null);
-    const NGROK_URL = "https://coaches-kerry-import-handed.trycloudflare.com";
+    const NGROK_URL = "https://memories-downloaded-evanescence-goals.trycloudflare.com";
 
     useEffect(() => {
         const fetchMovieDetails = async () => {

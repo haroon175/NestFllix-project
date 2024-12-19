@@ -23,7 +23,7 @@ const MoviesList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageLoading, setPageLoading] = useState(false);
 
-  const NGROK_URL = 'https://coaches-kerry-import-handed.trycloudflare.com';
+  const NGROK_URL = 'https://memories-downloaded-evanescence-goals.trycloudflare.com';
   const navigate = useNavigate()
   useEffect(() => {
     const fetchMovies = async (currentPage = 1) => {
@@ -110,9 +110,11 @@ const MoviesList = () => {
             margin: '20px 0',
             fontWeight: 'bold',
             position: 'relative',
+            color:'#950101',
+            fontFamily:'Bebas Neue'
           }}
         >
-         All Movies
+         movies
           <span
             style={{
               position: 'absolute',
@@ -121,7 +123,7 @@ const MoviesList = () => {
               transform: 'translateX(-50%)',
               width: '80px',
               height: '4px',
-              backgroundColor: '#950101',
+              backgroundColor: '#fff',
               borderRadius: '2px',
             }}
           />

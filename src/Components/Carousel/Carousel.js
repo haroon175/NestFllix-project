@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Carousel = () => {
   const [movies, setMovies] = useState([]);
-  const NGROK_URL = 'https://coaches-kerry-import-handed.trycloudflare.com';
+  const NGROK_URL = 'https://memories-downloaded-evanescence-goals.trycloudflare.com';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,9 +35,11 @@ const Carousel = () => {
           margin: '20px 0',
           fontWeight: 'bold',
           position: 'relative',
+          color:'#950101',
+          fontFamily:'Bebas Neue'
         }}
       >
-        Latest Movies
+        Popular movies
         <span
           style={{
             position: 'absolute',
@@ -46,7 +48,7 @@ const Carousel = () => {
             transform: 'translateX(-50%)',
             width: '80px',
             height: '4px',
-            backgroundColor: '#950101',
+            backgroundColor: '#fff',
             borderRadius: '2px',
           }}
         />
@@ -71,7 +73,7 @@ const Carousel = () => {
                 className="d-block w-100"
                 alt={movie.title}
                 style={{
-                  height: '400px',
+                  height: '300px',
                   width: '100%',
                 }}
               />
