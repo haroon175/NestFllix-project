@@ -14,15 +14,18 @@ import {
   List,
   ListItem,
   ListItemText,
+  Drawer,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import CloseIcon from "@mui/icons-material/Close";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../nest.png";
-
-const NGROK_URL = "https://walks-bridal-pitch-incurred.trycloudflare.com";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+const NGROK_URL = "https://coaches-kerry-import-handed.trycloudflare.com";
 
 const Navbar = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -30,6 +33,7 @@ const Navbar = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [activeCategory, setActiveCategory] = useState("Categories");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -69,7 +73,8 @@ const Navbar = () => {
 
   const handleCategoryClick = (category, id) => {
     setActiveCategory(category);
-    setAnchorEl(null);
+    setDrawerOpen(false);
+
     navigate(`/genre/${id}`);
   };
 
@@ -92,6 +97,37 @@ const Navbar = () => {
     setSearchResults([]);
   };
 
+  const toggleDrawer = () => {
+    setDrawerOpen((prev) => !prev);
+  };
+
+  const drawerContent = (
+    <Box
+      sx={{ width: 250, padding: 2 }}
+      role="presentation"
+    >
+      <img
+              src={Logo}
+              alt="logo"
+              style={{ height: "50px", width: "auto", objectFit: "contain", cursor: 'pointer' }}
+              onClick={() => {
+                navigate('/')
+                toggleDrawer(); 
+              }}
+              
+            />
+      <List>
+        {genres.map((genre) => (
+          <ListItem
+            key={genre.id}
+            onClick={() => handleCategoryClick(genre.name, genre.id)}
+          >
+            <ListItemText primary={genre.name} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -146,7 +182,6 @@ const Navbar = () => {
               }}
             />
 
-
             {searchResults.length > 0 && (
               <Box
                 sx={{
@@ -172,30 +207,49 @@ const Navbar = () => {
                 </List>
               </Box>
             )}
-
-
-
-
           </Box>
 
-          <Button
-            variant="text"
-            onClick={handleMenuClick}
-            sx={{ color: darkMode ? "white" : "#950101" }}
+          {/* Menu Button for Mobile */}
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={toggleDrawer}
+            sx={{ display: { xs: 'block', md: 'none' }, color: darkMode ? "yellow" : "black" }}
           >
-            {activeCategory}
+            {drawerOpen ? <CloseIcon sx={{ color: "#950101" }} /> : <WidgetsIcon sx={{ color: "#950101" }} />}
+          </IconButton>
+
+          {/* Button for Laptop screens */}
+
+          <Button
+            variant="outlined"
+            onClick={handleMenuClick}
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              color: darkMode ? '#950101' : '#950101',
+              borderColor: darkMode ? '#950101' : '#950101', 
+              fontSize: '14px',
+              '&:hover': {
+                borderColor: darkMode ? '#950101' : '#950101', 
+              },
+              marginRight:'5px'
+            }}
+          >
+            <ArrowDropDownIcon sx={{ marginRight: '5px' }} />
+            <span>{activeCategory}</span>
           </Button>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
-
           >
-            {/* <MenuItem onClick={() => handleCategoryClick("All",0)}>All</MenuItem> */}
             {genres.map((genre) => (
               <MenuItem
                 key={genre.id}
-                onClick={() => handleCategoryClick(genre.name, genre.id)}
+                onClick={() => {
+                  handleCategoryClick(genre.name, genre.id); 
+                  handleMenuClose(); 
+                }}
 
               >
                 {genre.name}
@@ -216,12 +270,17 @@ const Navbar = () => {
               <Brightness4Icon sx={{ color: "#950101" }} />
             )}
           </IconButton>
-
         </Toolbar>
       </AppBar>
 
-
-
+      {/* Drawer for Mobile Screens */}
+      <Drawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={toggleDrawer}
+      >
+        {drawerContent}
+      </Drawer>
     </ThemeProvider>
   );
 };

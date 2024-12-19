@@ -11,6 +11,8 @@ import {
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
+import Carousel from '../Carousel/Carousel';
+
 
 const MoviesList = () => {
   const [movies, setMovies] = useState([]);
@@ -21,7 +23,7 @@ const MoviesList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [pageLoading, setPageLoading] = useState(false);
 
-  const NGROK_URL = 'https://walks-bridal-pitch-incurred.trycloudflare.com';
+  const NGROK_URL = 'https://coaches-kerry-import-handed.trycloudflare.com';
   const navigate = useNavigate()
   useEffect(() => {
     const fetchMovies = async (currentPage = 1) => {
@@ -98,6 +100,7 @@ const MoviesList = () => {
 
   return (
     <div>
+        <Carousel/>
       <Container>
         <Typography
           variant="h4"
@@ -109,7 +112,7 @@ const MoviesList = () => {
             position: 'relative',
           }}
         >
-          Movies
+         All Movies
           <span
             style={{
               position: 'absolute',
@@ -248,6 +251,8 @@ const MoviesList = () => {
           />
         )}
       </Container>
+      
+      
     </div>
   );
 };
