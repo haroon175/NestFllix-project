@@ -5,7 +5,7 @@ import { Typography, Container, Box } from "@mui/material";
 const Video = () => {
     const location = useLocation();
     const { movie } = location.state || {};
-    const { title, description, links } = movie || {};
+    const { title, links } = movie || {};
 
     return (
         <Container sx={{ mt: 4 }}>

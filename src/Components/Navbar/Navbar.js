@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../nest.png";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const NGROK_URL = "https://sponsorship-units-welcome-illinois.trycloudflare.com";
+
 
 const Navbar = () => {
   const [genres, setGenres] = useState([]);
@@ -50,7 +50,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch(`${NGROK_URL}/tmdb/genres`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/genres`);
         const data = await response.json();
         setGenres(data.genres || []);
       } catch (error) {
@@ -78,7 +78,7 @@ const Navbar = () => {
   const handleSearch = async (event) => {
     if (event.target.value.trim() !== "") {
       try {
-        const response = await fetch(`${NGROK_URL}/tmdb/search?title=${event.target.value.trim()}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/search?title=${event.target.value.trim()}`);
         const data = await response.json();
         setSearchResults(data.results || []);
       } catch (error) {
@@ -111,10 +111,10 @@ const Navbar = () => {
       <div
         style={{
           position: 'sticky',
-          top: 0, // Ensures the sticky area sticks at the top
-          background: 'black', // Prevents content overlap with sticky area
-          zIndex: 1, // Ensures it stays above other content
-          paddingBottom: 8, // Adds spacing below the sticky content
+          top: 0,
+          background: 'black',
+          zIndex: 1,
+          paddingBottom: 8,
         }}
       >
         <img
@@ -235,7 +235,7 @@ const Navbar = () => {
               display: { xs: 'flex', md: 'none' },
               color: "#950101",
               alignItems: "center",
-              gap: 0.5, // Add spacing between the icon and text
+              gap: 0.5,
             }}
           >
             {drawerOpen ? (
@@ -262,7 +262,7 @@ const Navbar = () => {
                 borderColor: '#950101',
               },
               marginRight: '5px',
-              borderRadius:'20px'
+              borderRadius: '20px'
             }}
           >
             <ArrowDropDownIcon sx={{ marginRight: '5px' }} />

@@ -4,14 +4,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Carousel = () => {
-  const [movies, setMovies] = useState([]);
-  const NGROK_URL = 'https://sponsorship-units-welcome-illinois.trycloudflare.com';
+  const [movies, setMovies] = useState([]);  
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPopularMovies = async () => {
       try {
-        const response = await axios.get(`${NGROK_URL}/tmdb/popular`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tmdb/popular`);
         setMovies(response.data.results || []);
       } catch (error) {
         console.error('Error fetching popular movies:', error);
@@ -39,7 +38,7 @@ const Carousel = () => {
           fontFamily:'Bebas Neue'
         }}
       >
-        Popular movies
+       ρσρυℓαя мσνιєѕ
         <span
           style={{
             position: 'absolute',
@@ -60,7 +59,7 @@ const Carousel = () => {
         data-bs-ride="carousel"
         data-bs-interval="3000"
       >
-        <div className="carousel-inner" style={{ borderRadius: '20px' }}>
+        <div className="carousel-inner" style={{ borderRadius: '20px' , marginBottom:'20px'}}>
           {movies.map((movie, index) => (
             <div
               className={`carousel-item ${index === 0 ? 'active' : ''}`}

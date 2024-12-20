@@ -4,15 +4,14 @@ import {
     Card,
     CardContent,
     Typography,
-    Container,
-    CircularProgress,
+    Container,    
     Button,
     CardMedia,
     Pagination,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useParams, useNavigate } from 'react-router-dom';
-import LoadingComponent from '../LoadingComponent';
+import LoadingComponent from '../Loader/LoadingComponent';
 
 const MoviesPage = () => {
     const { category } = useParams();
@@ -22,13 +21,13 @@ const MoviesPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const moviesPerPage = 9;
 
-    const NGROK_URL = "https://sponsorship-units-welcome-illinois.trycloudflare.com";
+    
 
     useEffect(() => {
         const fetchCategoryMovies = async () => {
             setLoading(true);
             try {
-                const url = `${NGROK_URL}/api/movies/${category}/movies`;
+                const url = `${process.env.REACT_APP_API_URL}/api/movies/${category}/movies`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Failed to fetch movies');

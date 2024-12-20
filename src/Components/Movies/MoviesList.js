@@ -5,7 +5,6 @@ import {
   CardContent,
   Typography,
   Container,
-  CircularProgress,
   Button,
   CardMedia,
 } from '@mui/material';
@@ -13,25 +12,22 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../Carousel/Carousel';
 import MovieCarousels from './MovieCarousels';
-import LoadingComponent from '../LoadingComponent';
-
-
+import LoadingComponent from '../Loader/LoadingComponent';
 const MoviesList = () => {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('');
+  const [loading, setLoading] = useState(true);  
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageLoading, setPageLoading] = useState(false);
-
-  const NGROK_URL = 'https://sponsorship-units-welcome-illinois.trycloudflare.com';
+  const [pageLoading, setPageLoading] = useState(false); 
+  
   const navigate = useNavigate()
+  // Get all movies api integrate logic here
   useEffect(() => {
     const fetchMovies = async (currentPage = 1) => {
       setLoading(true);
       try {
-        const url = `${NGROK_URL}/tmdb/all?page=${currentPage}`;
+        const url = `${process.env.REACT_APP_API_URL}/tmdb/all?page=${currentPage}`;
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -54,34 +50,25 @@ const MoviesList = () => {
     fetchMovies(page);
   }, [page]);
 
-  const categories = [ 'Punjabi', 'Hindi', 'English'];
-
-  const handleCategoryClick = (category) => {
-    setActiveCategory(category);
-    navigate(`/movies/${category}`);
-  };
-
+  
+  // StarRating implement code
   const getStars = (rating) => {
     const filledStars = Math.round(rating / 2);
     return Array.from({ length: 5 }, (_, i) => (
       <StarIcon key={i} style={{ color: i < filledStars ? '#FFAF00' : '#ccc' }} />
     ));
   };
-
-
+  // pagination logic implement code
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
     }
   };
-  
+  //  Movies watch button logic here
   const handleWatchNowClick = (movieId) => {
-    navigate(`/videoPlay/${movieId}`); 
+    navigate(`/videoPlay/${movieId}`);
   };
-
-
-  
-
+  // Loader implement logic here
   if (loading) {
     return (
       <Container
@@ -93,16 +80,16 @@ const MoviesList = () => {
           height: '100vh',
         }}
       >
-       <LoadingComponent/>
+        <LoadingComponent />
       </Container>
     );
   }
-  
+
 
   return (
     <div>
-        <Carousel/>
-        <MovieCarousels/>
+      <Carousel />
+      <MovieCarousels />
       <Container>
         <Typography
           variant="h4"
@@ -112,11 +99,11 @@ const MoviesList = () => {
             margin: '20px 0',
             fontWeight: 'bold',
             position: 'relative',
-            color:'#950101',
-            fontFamily:'Bebas Neue'
+            color: '#950101',
+            fontFamily: 'Bebas Neue'
           }}
         >
-         movies
+           мσνιєѕ
           <span
             style={{
               position: 'absolute',
@@ -129,33 +116,7 @@ const MoviesList = () => {
               borderRadius: '2px',
             }}
           />
-        </Typography>
-
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-      {categories.map((category) => (
-        <Button
-          key={category}
-          variant={activeCategory === category ? 'contained' : 'outlined'}
-          style={
-            activeCategory === category
-              ? {
-                  backgroundColor: '#950101',
-                  color: 'white',
-                  border: 'none',
-                  margin: '5px 10px',
-                }
-              : {
-                  color: '#950101',
-                  borderColor: '#950101',
-                  margin: '5px 10px',
-                }
-          }
-          onClick={() => handleCategoryClick(category)}
-        >
-          {category}
-        </Button>
-      ))}
-    </div>
+        </Typography>       
 
         <Grid container spacing={4}>
           {filteredMovies.map((movie) => (
@@ -206,7 +167,6 @@ const MoviesList = () => {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px', gap: '20px' }}>
           <Button
             variant="contained"
-
             disabled={page === 1}
             onClick={() => handlePageChange(page - 1)}
             style={{ textTransform: 'capitalize', padding: '8px 16px' }}
@@ -220,12 +180,11 @@ const MoviesList = () => {
           </Button>
           <Typography
             variant="subtitle1"
-            style={{
-              background: '#f0f0f0',
+            style={{             
               padding: '8px 16px',
               borderRadius: '8px',
               fontWeight: 'bold',
-              color: '#333',
+              color: '#950101',
             }}
           >
             Page {page} of {totalPages}
@@ -244,21 +203,16 @@ const MoviesList = () => {
             Next
           </Button>
         </div>
-
-
         {pageLoading && (
           <LoadingComponent
             style={{
               display: 'block',
               margin: '20px auto',
-              color:'#950101'
+              color: '#950101'
             }}
           />
-          
         )}
       </Container>
-      
-      
     </div>
   );
 };

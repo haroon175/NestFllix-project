@@ -6,17 +6,17 @@ import { useNavigate } from "react-router-dom";
 const MovieCarousels = () => {
     const [hindiMovies, setHindiMovies] = useState([]);
     const [punjabiMovies, setPunjabiMovies] = useState([]);
-    const NGROK_URL = 'https://sponsorship-units-welcome-illinois.trycloudflare.com';
+    const [activeCategory, setActiveCategory] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const hindiResponse = await fetch(`${NGROK_URL}/api/movies/hindi/movies`);
+                const hindiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/movies/hindi/movies`);
                 const hindiData = await hindiResponse.json();
                 setHindiMovies(hindiData);
 
-                const punjabiResponse = await fetch(`${NGROK_URL}/api/movies/punjabi/movies`);
+                const punjabiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/movies/punjabi/movies`);
                 const punjabiData = await punjabiResponse.json();
                 setPunjabiMovies(punjabiData);
             } catch (error) {
@@ -26,6 +26,12 @@ const MovieCarousels = () => {
 
         fetchMovies();
     }, []);
+
+    const categories = ['Punjabi', 'Hindi', 'English'];
+    const handleCategoryClick = (category) => {
+        setActiveCategory(category);
+        navigate(`/movies/${category}`);
+    };
 
     const handleWatchNow = (movie) => {
         navigate(`/videoPlay`, { state: { movie } });
@@ -116,10 +122,40 @@ const MovieCarousels = () => {
 
     return (
         <Container>
+            <div style={{border:'#950101' , width:'350px', margin:'auto',borderRadius:'25px' , backgroundColor:'#950101'}}>           
+            <div style={{ textAlign: 'center' }}>
+                {categories.map((category) => (
+                    <Button
+                        key={category}
+                        variant={activeCategory === category ? 'contained' : 'outlined'}
+                        style={
+                            activeCategory === category
+                                ? {
+                                    backgroundColor: '#950101',
+                                    color: 'white',
+                                    border: 'none',
+                                    margin: '5px 10px',
+                                    borderRadius:'20px'
+                                }
+                                : {
+                                    color: '#fff',
+                                    borderColor: '#fff',
+                                    margin: '5px 10px',
+                                    borderRadius:'20px'
+                                }
+                        }
+                        onClick={() => handleCategoryClick(category)}
+                    >
+                        {category}
+                    </Button>
+                ))}
+            </div>
+            
+            </div>
             <div className="mt-2">
                 <div className="row">
-                    {renderCarousel(hindiMovies, "hindiCarousel", "Hindi Movies")}
-                    {renderCarousel(punjabiMovies, "punjabiCarousel", "Punjabi Movies")}
+                    {renderCarousel(hindiMovies, "hindiCarousel", "нιη∂ι мσνιєѕ")}
+                    {renderCarousel(punjabiMovies, "punjabiCarousel", "ρυηנαвι мσνιєѕ")}
                 </div>
             </div>
         </Container>

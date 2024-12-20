@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'; 
-import { Container, Typography, CircularProgress } from '@mui/material';
-import LoadingComponent from '../LoadingComponent';
+import { Container, Typography } from '@mui/material';
+import LoadingComponent from '../Loader/LoadingComponent';
 
 const VideoPlay = () => {
     const { id } = useParams(); 
@@ -9,12 +9,12 @@ const VideoPlay = () => {
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const [videoSrc, setVideoSrc] = useState(null);
-    const NGROK_URL = "https://sponsorship-units-welcome-illinois.trycloudflare.com";
+   
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
-                const movieUrl = `${NGROK_URL}/tmdb/movie/${id}`;
+                const movieUrl = `${process.env.REACT_APP_API_URL}/tmdb/movie/${id}`;
                 const response = await fetch(movieUrl);
                 
                 if (!response.ok) {
@@ -27,7 +27,7 @@ const VideoPlay = () => {
                 setVideoSrc(data.link || 'https://www.youtube.com/watch?v=g5yF8RsjNRQ');
 
                 
-                const videoUrl = `${NGROK_URL}/tmdb/movie/${id}/videos`;
+                const videoUrl = `${process.env.REACT_APP_API_URL}/tmdb/movie/${id}/videos`;
                 const videoResponse = await fetch(videoUrl);
                 if (!videoResponse.ok) {
                     throw new Error('Error fetching movie videos');
