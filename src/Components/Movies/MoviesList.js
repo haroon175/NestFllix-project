@@ -13,6 +13,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
 import Carousel from '../Carousel/Carousel';
 import MovieCarousels from './MovieCarousels';
+import LoadingComponent from '../LoadingComponent';
 
 
 const MoviesList = () => {
@@ -79,21 +80,24 @@ const MoviesList = () => {
   };
 
 
+  
 
   if (loading) {
     return (
       <Container
         style={{
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           height: '100vh',
         }}
       >
-        <CircularProgress />
+       <LoadingComponent/>
       </Container>
     );
   }
+  
 
   return (
     <div>
@@ -243,12 +247,14 @@ const MoviesList = () => {
 
 
         {pageLoading && (
-          <CircularProgress
+          <LoadingComponent
             style={{
               display: 'block',
               margin: '20px auto',
+              color:'#950101'
             }}
           />
+          
         )}
       </Container>
       

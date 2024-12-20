@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom'; 
 import { Container, Typography, CircularProgress } from '@mui/material';
+import LoadingComponent from '../LoadingComponent';
 
 const VideoPlay = () => {
     const { id } = useParams(); 
@@ -56,7 +57,7 @@ const VideoPlay = () => {
                     height: '100vh',
                 }}
             >
-                <CircularProgress />
+                <LoadingComponent />
             </Container>
         );
     }

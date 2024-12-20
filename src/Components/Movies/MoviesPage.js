@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useParams, useNavigate } from 'react-router-dom';
+import LoadingComponent from '../LoadingComponent';
 
 const MoviesPage = () => {
     const { category } = useParams();
@@ -74,7 +75,7 @@ const MoviesPage = () => {
                     height: '100vh',
                 }}
             >
-                <CircularProgress />
+                <LoadingComponent />
             </Container>
         );
     }
