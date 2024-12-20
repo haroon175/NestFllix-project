@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useLocation, useParams } from 'react-router-dom'; 
 import { Container, Typography, CircularProgress } from '@mui/material';
 
 const VideoPlay = () => {
     const { id } = useParams(); 
+    const location = useLocation();
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const [videoSrc, setVideoSrc] = useState(null);
-    const NGROK_URL = "https://memories-downloaded-evanescence-goals.trycloudflare.com";
+    const NGROK_URL = "https://sponsorship-units-welcome-illinois.trycloudflare.com";
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
@@ -22,7 +23,7 @@ const VideoPlay = () => {
 
                 
                 setMovie(data);
-                setVideoSrc(data.link);
+                setVideoSrc(data.link || 'https://www.youtube.com/watch?v=g5yF8RsjNRQ');
 
                 
                 const videoUrl = `${NGROK_URL}/tmdb/movie/${id}/videos`;
@@ -33,7 +34,7 @@ const VideoPlay = () => {
                 const videoData = await videoResponse.json();
 
 
-                setVideoSrc(videoData.link);
+                setVideoSrc(videoData.link || 'https://www.youtube.com/watch?v=g5yF8RsjNRQ');
 
             } catch (error) {
                 console.error('Error fetching movie details or videos:', error);
@@ -72,10 +73,10 @@ const VideoPlay = () => {
             />
 
             <Typography variant="h6" gutterBottom >
-            <span style={{ fontWeight: 'bold', color: '#950101' }}>Title</span>: {movie.title}
+            <span style={{ fontWeight: 'bold', color: '#950101' }}>Title</span>:  {movie.title || location.state?.title}
             </Typography>
             <Typography variant="body1" gutterBottom>
-            <span style={{ fontWeight: 'bold', color: '#950101' }}>Description</span>: {movie.overview}
+            <span style={{ fontWeight: 'bold', color: '#950101' }}>Description</span>: {movie.overview || 'Description not available'}
             </Typography>
             
         </Container>

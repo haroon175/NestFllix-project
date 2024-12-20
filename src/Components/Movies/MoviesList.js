@@ -19,12 +19,12 @@ const MoviesList = () => {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageLoading, setPageLoading] = useState(false);
 
-  const NGROK_URL = 'https://memories-downloaded-evanescence-goals.trycloudflare.com';
+  const NGROK_URL = 'https://sponsorship-units-welcome-illinois.trycloudflare.com';
   const navigate = useNavigate()
   useEffect(() => {
     const fetchMovies = async (currentPage = 1) => {
@@ -53,15 +53,11 @@ const MoviesList = () => {
     fetchMovies(page);
   }, [page]);
 
-  const categories = ['All', 'Punjabi', 'Hindi', 'Pakistani', 'English'];
+  const categories = [ 'Punjabi', 'Hindi', 'English'];
 
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
-    if (category === 'All') {
-      setFilteredMovies(movies);
-    } else {
-      setFilteredMovies(movies.filter((movie) => movie.genre === category));
-    }
+    navigate(`/movies/${category}`);
   };
 
   const getStars = (rating) => {
@@ -132,30 +128,30 @@ const MoviesList = () => {
         </Typography>
 
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={activeCategory === category ? 'contained' : 'outlined'}
-              style={
-                activeCategory === category
-                  ? {
-                    backgroundColor: '#950101',
-                    color: 'white',
-                    border: 'none',
-                    margin: '5px 10px',
-                  }
-                  : {
-                    color: '#950101',
-                    borderColor: '#950101',
-                    margin: '5px 10px',
-                  }
-              }
-              onClick={() => handleCategoryClick(category)}
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+      {categories.map((category) => (
+        <Button
+          key={category}
+          variant={activeCategory === category ? 'contained' : 'outlined'}
+          style={
+            activeCategory === category
+              ? {
+                  backgroundColor: '#950101',
+                  color: 'white',
+                  border: 'none',
+                  margin: '5px 10px',
+                }
+              : {
+                  color: '#950101',
+                  borderColor: '#950101',
+                  margin: '5px 10px',
+                }
+          }
+          onClick={() => handleCategoryClick(category)}
+        >
+          {category}
+        </Button>
+      ))}
+    </div>
 
         <Grid container spacing={4}>
           {filteredMovies.map((movie) => (

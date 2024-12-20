@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../nest.png";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const NGROK_URL = "https://memories-downloaded-evanescence-goals.trycloudflare.com";
+const NGROK_URL = "https://sponsorship-units-welcome-illinois.trycloudflare.com";
 
 const Navbar = () => {
   const [genres, setGenres] = useState([]);
