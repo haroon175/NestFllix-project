@@ -27,7 +27,7 @@ const MoviesList = () => {
     const fetchMovies = async (currentPage = 1) => {
       setLoading(true);
       try {
-        const url = `${process.env.REACT_APP_API_URL}/tmdb/all?page=${currentPage}`;
+        const url = `${process.env.REACT_APP_API_URL}/api/tmdb/all?page=${currentPage}`;
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');

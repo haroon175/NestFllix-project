@@ -14,7 +14,7 @@ const Genre = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/genre/${id}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/genre/${id}`);
         const data = await response.json();
         setMovies(data.results || []);
       } catch (error) {
@@ -24,7 +24,7 @@ const Genre = () => {
 
     const fetchGenreName = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/genres`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/genres`);
         const data = await response.json();
         const genre = data.genres.find((genre) => genre.id === parseInt(id));
         setGenreName(genre ? genre.name : "Unknown Genre");
@@ -46,7 +46,7 @@ const Genre = () => {
 
   const fetchMovieDetails = async (movieId) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/movie/${movieId}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/movie/${movieId}`);
       const data = await response.json();
       setSelectedMovie(data);
     } catch (error) {

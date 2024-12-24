@@ -10,7 +10,7 @@ const Carousel = () => {
   useEffect(() => {
     const fetchPopularMovies = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/tmdb/popular`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tmdb/popular`);
         setMovies(response.data.results || []);
       } catch (error) {
         console.error('Error fetching popular movies:', error);
@@ -20,9 +20,33 @@ const Carousel = () => {
     fetchPopularMovies();
   }, []);
 
-  const handleClick = (id) => {
-    navigate(`/videoPlay/${id}`);
+  
+  
+  const handleClick = async (id) => {
+    
+  
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/tmdb/movie/${id}/videos`,
+        {
+          params: { movieId: id }, // Ensure the query parameters are correctly structured
+        }
+      );
+  
+      if (response.data?.movie?.links) {
+        // If the movie has a valid link, navigate to the video play page
+        navigate(`/videoPlay/${id}`, { state: { videoLink: response.data.movie.links } });
+      } else {
+        // If no valid link is available, navigate with a fallback state
+        navigate(`/videoPlay/${id}`, { state: { fallback: true } });
+      }
+    } catch (error) {
+      console.error('Error fetching movie data:', error);
+      navigate(`/videoPlay/${id}`, { state: { fallback: true } });
+    }
   };
+  
+  
 
   return (
     <Container>
@@ -38,7 +62,7 @@ const Carousel = () => {
           fontFamily:'Bebas Neue'
         }}
       >
-       ρσρυℓαя мσνιєѕ
+       Popular мσνιєѕ
         <span
           style={{
             position: 'absolute',

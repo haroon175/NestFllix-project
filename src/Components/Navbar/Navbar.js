@@ -50,7 +50,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/genres`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/genres`);
         const data = await response.json();
         setGenres(data.genres || []);
       } catch (error) {
@@ -78,7 +78,7 @@ const Navbar = () => {
   const handleSearch = async (event) => {
     if (event.target.value.trim() !== "") {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/tmdb/search?title=${event.target.value.trim()}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/search?title=${event.target.value.trim()}`);
         const data = await response.json();
         setSearchResults(data.results || []);
       } catch (error) {

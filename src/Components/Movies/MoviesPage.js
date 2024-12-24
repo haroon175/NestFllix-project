@@ -27,13 +27,13 @@ const MoviesPage = () => {
         const fetchCategoryMovies = async () => {
             setLoading(true);
             try {
-                const url = `${process.env.REACT_APP_API_URL}/api/movies/${category}/movies`;
+                const url = `${process.env.REACT_APP_API_URL}/api/tmdb/${category}-movies`;
                 const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Failed to fetch movies');
                 }
                 const data = await response.json();
-                setMovies(data);
+                setMovies(data.result || []);
             } catch (error) {
                 console.error('Error fetching movies:', error);
             } finally {

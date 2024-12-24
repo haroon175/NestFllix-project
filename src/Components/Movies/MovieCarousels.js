@@ -12,13 +12,13 @@ const MovieCarousels = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const hindiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/movies/hindi/movies`);
+                const hindiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/hindi-movies`);
                 const hindiData = await hindiResponse.json();
-                setHindiMovies(hindiData);
+                setHindiMovies(hindiData.result || []);
 
-                const punjabiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/movies/punjabi/movies`);
+                const punjabiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/punjabi-movies`);
                 const punjabiData = await punjabiResponse.json();
-                setPunjabiMovies(punjabiData);
+                setPunjabiMovies(punjabiData.result || []);
             } catch (error) {
                 console.error("Error fetching movies:", error);
             }
@@ -154,8 +154,8 @@ const MovieCarousels = () => {
             </div>
             <div className="mt-2">
                 <div className="row">
-                    {renderCarousel(hindiMovies, "hindiCarousel", "нιη∂ι мσνιєѕ")}
-                    {renderCarousel(punjabiMovies, "punjabiCarousel", "ρυηנαвι мσνιєѕ")}
+                    {renderCarousel(hindiMovies, "hindiCarousel", "Hindi мσνιєѕ")}
+                    {renderCarousel(punjabiMovies, "punjabiCarousel", "Punjabi мσνιєѕ")}
                 </div>
             </div>
         </Container>
