@@ -155,7 +155,7 @@ const Navbar = () => {
       >
         <Toolbar>
           {/* Logo */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, display: { xs: 'none', md: 'block' } }} >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} >
             <img
               src={Logo}
               alt="logo"

@@ -11,6 +11,8 @@ import VideoPlay from './Components/VideoPlayer/VideoPlay';
 import Footer from './Components/Footer/Footer';
 import Video from './Components/VideoPlayer/Video';
 import MoviesPage from './Components/Movies/MoviesPage';
+import AllSeasons from './Components/Seasons/AllSeasons';
+import SeasonEpisodes from './Components/Seasons/SeasonEpisodes';
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
         <Route path='/videoPlay' element={<Video/>}/>
         <Route path='/genre/:id' element={<Genre/>}/>
         <Route path="/video/:id" element={<MovieDetail />} />
+        <Route path='/all/Seasons' element={<AllSeasons/>}/>
+        <Route path='/season/:id' element={<SeasonEpisodes/>}/>
       </Routes>
       <Footer/>
     </Router>

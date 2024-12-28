@@ -16,11 +16,11 @@ import LoadingComponent from '../Loader/LoadingComponent';
 const MoviesList = () => {
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageLoading, setPageLoading] = useState(false); 
-  
+  const [pageLoading, setPageLoading] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('');
   const navigate = useNavigate()
   // Get all movies api integrate logic here
   useEffect(() => {
@@ -50,7 +50,7 @@ const MoviesList = () => {
     fetchMovies(page);
   }, [page]);
 
-  
+
   // StarRating implement code
   const getStars = (rating) => {
     const filledStars = Math.round(rating / 2);
@@ -68,7 +68,17 @@ const MoviesList = () => {
   const handleWatchNowClick = (movieId) => {
     navigate(`/videoPlay/${movieId}`);
   };
-  // Loader implement logic here
+
+  const categories = ['Punjabi', 'Hindi', 'English'];
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+    navigate(`/movies/${category}`);
+  };
+
+  const handleSeasons = () =>{
+    navigate('/all/Seasons')
+  }
+
   if (loading) {
     return (
       <Container
@@ -91,6 +101,46 @@ const MoviesList = () => {
       <Carousel />
       <MovieCarousels />
       <Container>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={activeCategory === category ? 'contained' : 'outlined'}
+              style={
+                activeCategory === category
+                  ? {
+                    backgroundColor: '#950101',
+                    color: 'white',
+                    border: 'none',
+                    margin: '5px 10px',
+                    borderRadius: '20px',
+                  }
+                  : {
+                    color: '#950101',
+                    borderColor: '#950101',
+                    margin: '5px 10px',
+                    borderRadius: '20px',
+                  }
+              }
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </Button>
+          ))}
+          <Button
+          variant='outlined'
+            style={{
+              margin: '5px 10px',
+              color: '#950101',
+              borderColor: '#950101',
+              borderRadius: '20px',
+            }}
+            onClick={handleSeasons}
+          >
+            Seasons
+          </Button>
+        </div>
+
         <Typography
           variant="h4"
           gutterBottom
@@ -103,7 +153,7 @@ const MoviesList = () => {
             fontFamily: 'Bebas Neue'
           }}
         >
-           мσνιєѕ
+          мσνιєѕ
           <span
             style={{
               position: 'absolute',
@@ -116,7 +166,7 @@ const MoviesList = () => {
               borderRadius: '2px',
             }}
           />
-        </Typography>       
+        </Typography>
 
         <Grid container spacing={4}>
           {filteredMovies.map((movie) => (
@@ -180,7 +230,7 @@ const MoviesList = () => {
           </Button>
           <Typography
             variant="subtitle1"
-            style={{             
+            style={{
               padding: '8px 16px',
               borderRadius: '8px',
               fontWeight: 'bold',

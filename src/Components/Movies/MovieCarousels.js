@@ -6,9 +6,15 @@ import { useNavigate } from "react-router-dom";
 const MovieCarousels = () => {
     const [hindiMovies, setHindiMovies] = useState([]);
     const [punjabiMovies, setPunjabiMovies] = useState([]);
-    const [activeCategory, setActiveCategory] = useState('');
+    const [englishMovies, setEnglishMovies] = useState([]);
     const navigate = useNavigate();
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
     useEffect(() => {
         const fetchMovies = async () => {
             try {
@@ -19,6 +25,10 @@ const MovieCarousels = () => {
                 const punjabiResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/punjabi-movies`);
                 const punjabiData = await punjabiResponse.json();
                 setPunjabiMovies(punjabiData.result || []);
+
+                const englishResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/english-movies`);
+                const englishData = await englishResponse.json();
+                setEnglishMovies(englishData.result || []);
             } catch (error) {
                 console.error("Error fetching movies:", error);
             }
@@ -27,27 +37,21 @@ const MovieCarousels = () => {
         fetchMovies();
     }, []);
 
-    const categories = ['Punjabi', 'Hindi', 'English'];
-    const handleCategoryClick = (category) => {
-        setActiveCategory(category);
-        navigate(`/movies/${category}`);
-    };
-
     const handleWatchNow = (movie) => {
         navigate(`/videoPlay`, { state: { movie } });
     };
 
     const renderCarousel = (movies, id, title) => (
-        <div className="col-md-6 d-flex flex-column align-items-center">
+        <div className="mb-4">
             <Typography
                 variant="h4"
                 gutterBottom
                 sx={{
-                    textAlign: "center",
-                    margin: "20px 0",
-                    fontWeight: "bold",
-                    color: "#950101",
-                    fontFamily: "Bebas Neue",
+                    margin: '20px 0',
+                    fontWeight: 'bold',
+                    color: '#950101',
+                    fontFamily: 'Bebas Neue',
+                    fontSize: '20px',                    
                 }}
             >
                 {title}
@@ -56,52 +60,80 @@ const MovieCarousels = () => {
                 id={id}
                 className="carousel slide"
                 data-bs-ride="carousel"
-                style={{ width: "370px", height: "350px" }}
+                data-bs-wrap="true"
+                style={{ width: "100%", margin: "0 auto" }}
             >
                 <div className="carousel-inner" style={{ borderRadius: "20px" }}>
-                    {movies.map((movie, index) => (
-                        <div
-                            className={`carousel-item ${index === 0 ? "active" : ""}`}
-                            key={movie.id}
-                        >
-                            <img
-                                src={movie.posterimage}
-                                className="d-block w-100"
-                                alt={movie.title}
-                                style={{ height: "350px" }}
-                            />
-                            <div className="carousel-caption d-none d-md-block">
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        position: 'absolute',
-                                        bottom: '20px',
-                                        left: '50%',
-                                        borderRadius: '20px',
-                                        transform: 'translateX(-50%)',
-                                        backgroundColor: '#950101',
-                                        '&:hover': {
-                                            backgroundColor: '#800101',
-                                        },
+                    {movies.map((movie, index) => {
+                        const groupSize = isMobile ? 2 : 4;
+                        const isGroupStart = index % groupSize === 0;
+                        const group = movies.slice(index, index + groupSize);
+
+                        if (!isGroupStart) return null;
+
+                        return (
+                            <div
+                                className={`carousel-item ${index === 0 ? "active" : ""}`}
+                                key={`group-${index}`}
+                            >
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        gap: "10px",
+                                        flexWrap: "wrap",
                                     }}
-                                    onClick={() => handleWatchNow(movie)}
                                 >
-                                    Watch Now
-                                </Button>
+                                    {group.map((groupMovie) => (
+                                        <div
+                                            key={groupMovie.id}
+                                            style={{
+                                                flex: `1 1 calc(${isMobile ? "50%" : "25%"} - 10px)`,
+                                                borderRadius: "20px",
+                                                overflow: "hidden",
+                                                position: "relative",
+                                            }}
+                                        >
+                                            <img
+                                                src={groupMovie.posterimage}
+                                                className="d-block w-100"
+                                                alt={groupMovie.title}
+                                                style={{
+                                                    height: "350px",
+                                                    objectFit: "cover",
+                                                }}
+                                            />
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    position: "absolute",
+                                                    bottom: "10px",
+                                                    left: "50%",
+                                                    transform: "translateX(-50%)",
+                                                    borderRadius: "20px",
+                                                    backgroundColor: "#950101",
+                                                    "&:hover": {
+                                                        backgroundColor: "#800101",
+                                                    },
+                                                }}
+                                                onClick={() => handleWatchNow(groupMovie)}
+                                            >
+                                                Watch
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
+
                 <button
                     className="carousel-control-prev"
                     type="button"
                     data-bs-target={`#${id}`}
                     data-bs-slide="prev"
                 >
-                    <span
-                        className="carousel-control-prev-icon"
-                        aria-hidden="true"
-                    ></span>
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Previous</span>
                 </button>
                 <button
@@ -110,53 +142,20 @@ const MovieCarousels = () => {
                     data-bs-target={`#${id}`}
                     data-bs-slide="next"
                 >
-                    <span
-                        className="carousel-control-next-icon"
-                        aria-hidden="true"
-                    ></span>
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>
+
         </div>
     );
 
     return (
         <Container>
-            <div style={{border:'#950101' , width:'350px', margin:'auto',borderRadius:'25px' , backgroundColor:'#950101'}}>           
-            <div style={{ textAlign: 'center' }}>
-                {categories.map((category) => (
-                    <Button
-                        key={category}
-                        variant={activeCategory === category ? 'contained' : 'outlined'}
-                        style={
-                            activeCategory === category
-                                ? {
-                                    backgroundColor: '#950101',
-                                    color: 'white',
-                                    border: 'none',
-                                    margin: '5px 10px',
-                                    borderRadius:'20px'
-                                }
-                                : {
-                                    color: '#fff',
-                                    borderColor: '#fff',
-                                    margin: '5px 10px',
-                                    borderRadius:'20px'
-                                }
-                        }
-                        onClick={() => handleCategoryClick(category)}
-                    >
-                        {category}
-                    </Button>
-                ))}
-            </div>
-            
-            </div>
             <div className="mt-2">
-                <div className="row">
-                    {renderCarousel(hindiMovies, "hindiCarousel", "Hindi мσνιєѕ")}
-                    {renderCarousel(punjabiMovies, "punjabiCarousel", "Punjabi мσνιєѕ")}
-                </div>
+                {renderCarousel(hindiMovies, "hindiCarousel", "Hindi мσνιєѕ")}
+                {renderCarousel(englishMovies, "englishCarousel", "English мσνιєѕ")}
+                {renderCarousel(punjabiMovies, "punjabiCarousel", "Punjabi мσνιєѕ")}
             </div>
         </Container>
     );
