@@ -93,7 +93,7 @@ const AllSeasons = () => {
                                         alt={season.title}
                                         style={{
                                             width: '100%',
-                                            height: '150px',
+                                            height: 'auto',
                                             borderRadius: '10px',
                                         }}
                                     />

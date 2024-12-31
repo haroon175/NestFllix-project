@@ -13,12 +13,14 @@ import Video from './Components/VideoPlayer/Video';
 import MoviesPage from './Components/Movies/MoviesPage';
 import AllSeasons from './Components/Seasons/AllSeasons';
 import SeasonEpisodes from './Components/Seasons/SeasonEpisodes';
+// import TrailerWalls from './Components/Trailers/TrailerWalls';
 
 const App = () => {
   return (
     <Router>
       <Navbar/>
-      <Routes>        
+      <Routes> 
+        {/* <Route path='/' element={<TrailerWalls/>}/>        */}
         <Route path="/" element={<MoviesList />} />
         <Route path='/videoPlay/:id' element={<VideoPlay/>}/>
         <Route path='/movies/:category' element={<MoviesPage/>}/>

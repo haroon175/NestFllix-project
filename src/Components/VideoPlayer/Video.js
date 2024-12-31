@@ -52,7 +52,7 @@ const Video = () => {
         ));
     };
 
-    const { title, description, links, language } = movie;
+    const { title,  links } = movie;
 
     return (
         <Container sx={{ marginTop: "20px" }}>
@@ -64,7 +64,7 @@ const Video = () => {
                 Back
             </Button>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
                 {/* Left Column: Video Player */}
                 <Grid item xs={12} md={8}>
                     <Box
@@ -87,6 +87,8 @@ const Video = () => {
                                 left: 0,
                                 width: "100%",
                                 height: "100%",
+                                border: '1px solid #950101',
+                                borderRadius: '20px'
                             }}
                         ></iframe>
                     </Box>
@@ -94,14 +96,14 @@ const Video = () => {
                     <Typography variant="h6" gutterBottom sx={{ marginTop: "10px" }}>
                         <span style={{ fontWeight: "bold", color: "#950101" }}>Title</span>: {title}
                     </Typography>
-                    <Typography variant="body1" gutterBottom>
+                    {/* <Typography variant="body1" gutterBottom>
                         <span style={{ fontWeight: "bold", color: "#950101" }}>Description</span>: {description || "Description not available"}
-                    </Typography>
+                    </Typography> */}
                 </Grid>
 
                 {/* Right Column: Recommended Videos */}
                 <Grid item xs={12} md={4}>
-                    <Typography variant="h5" sx={{ color: "#950101", marginBottom: "10px", fontWeight:'bold' }}>
+                    <Typography variant="h5" sx={{ color: "#950101", marginBottom: "10px", fontWeight: 'bold' }}>
                         Recommended Movies
                     </Typography>
 
@@ -117,31 +119,58 @@ const Video = () => {
                         </Typography>
                     )}
 
-                    <Grid container spacing={2}>
-                        {recommendedMovies.map((recMovie, index) => (
-                            <Grid item xs={12} key={index}>
-                                <Card
-                                    sx={{ cursor: "pointer", display: "flex", alignItems: "center", backgroundColor: 'black', border: '1px solid #950101' }}
-                                    onClick={() => navigate("/videoPlay", { state: { movie: recMovie } })}
-                                >
-                                    <CardMedia
-                                        component="img"
-                                        sx={{ width: 100 }}
-                                        image={recMovie.posterimage || "https://via.placeholder.com/150"}
-                                        alt={recMovie.title}
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="subtitle1" component="div" sx={{ color: '#950101' }}>
-                                            {recMovie.title}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {getStars(recMovie.rating)}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
+                    <Box
+                        sx={{
+                            border: "2px solid #950101", 
+                            borderRadius: "8px", 
+                            overflowY: "auto",
+                            maxHeight: "500px", 
+                            padding: "16px", 
+                            backgroundColor: "black", 
+                        }}
+                    >
+                        <Grid container spacing={2}>
+                            {recommendedMovies.map((recMovie, index) => (
+                                <Grid item xs={12} key={index}>
+                                    <Card
+                                        sx={{
+                                            cursor: "pointer",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            backgroundColor: "black",
+                                            border: "1px solid #950101",
+                                        }}
+                                        onClick={() => navigate("/videoPlay", { state: { movie: recMovie } })}
+                                    >
+                                        <CardMedia
+                                            component="img"
+                                            sx={{ width: 100, height: 100 }}
+                                            image={recMovie.posterimage || "https://via.placeholder.com/150"}
+                                            alt={recMovie.title}
+                                            onError={(e) => (e.target.src = "/placeholder-image.png")}
+                                        />
+                                        <CardContent>
+                                            <Typography
+                                                gutterBottom
+                                                variant="subtitle1"
+                                                component="div"
+                                                sx={{ color: "#950101" }}
+                                            >
+                                                {recMovie.title}
+                                            </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{ color: "#950101" }}
+                                            >
+                                                {getStars(recMovie.rating)}
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+
                 </Grid>
             </Grid>
         </Container>

@@ -64,7 +64,7 @@ const SeasonEpisodes = () => {
 
             <Grid container spacing={3}>
                 {episodes.map((episode) => (
-                    <Grid item xs={12} sm={6} md={4} key={episode._id}>
+                    <Grid item xs={6} sm={6} md={4} lg={4} key={episode._id}>
                         <Box
                             style={{
                                 border: '1px solid #950101',
