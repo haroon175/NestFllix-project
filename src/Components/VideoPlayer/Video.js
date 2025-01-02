@@ -52,14 +52,14 @@ const Video = () => {
         ));
     };
 
-    const { title,  links } = movie;
+    const { title, links } = movie;
 
     return (
         <Container sx={{ marginTop: "20px" }}>
             <Button
                 variant="contained"
                 sx={{ backgroundColor: "#950101", marginBottom: "5px" }}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/movies/dashboard")}
             >
                 Back
             </Button>
@@ -72,7 +72,7 @@ const Video = () => {
                             position: "relative",
                             width: "100%",
                             height: 0,
-                            paddingTop: "56.25%", // Aspect ratio 16:9
+                            paddingTop: "56.25%", 
                         }}
                     >
                         <iframe
@@ -93,9 +93,10 @@ const Video = () => {
                         ></iframe>
                     </Box>
 
-                    <Typography variant="h6" gutterBottom sx={{ marginTop: "10px" }}>
+                    <Typography variant="h6" gutterBottom sx={{ marginTop: "10px", wordWrap: "break-word" }}>
                         <span style={{ fontWeight: "bold", color: "#950101" }}>Title</span>: {title}
                     </Typography>
+
                     {/* <Typography variant="body1" gutterBottom>
                         <span style={{ fontWeight: "bold", color: "#950101" }}>Description</span>: {description || "Description not available"}
                     </Typography> */}
@@ -104,7 +105,7 @@ const Video = () => {
                 {/* Right Column: Recommended Videos */}
                 <Grid item xs={12} md={4}>
                     <Typography variant="h5" sx={{ color: "#950101", marginBottom: "10px", fontWeight: 'bold' }}>
-                        Recommended Movies
+                        𝑹𝒆𝒄𝒐𝒎𝒎𝒆𝒏𝒅𝒆𝒅 𝑴𝒐𝒗𝒊𝒆𝒔
                     </Typography>
 
                     {loading && (
@@ -121,12 +122,22 @@ const Video = () => {
 
                     <Box
                         sx={{
-                            border: "2px solid #950101", 
-                            borderRadius: "8px", 
+                            border: "2px solid #950101",
+                            borderRadius: "8px",
                             overflowY: "auto",
-                            maxHeight: "500px", 
-                            padding: "16px", 
-                            backgroundColor: "black", 
+                            maxHeight: "450px",
+                            padding: "16px",
+                            backgroundColor: "black",
+                            "&::-webkit-scrollbar": {
+                                width: "8px",
+                            },
+                            "&::-webkit-scrollbar-thumb": {
+                                backgroundColor: "black",
+                                borderRadius: "4px",
+                            },
+                            "&::-webkit-scrollbar-track": {
+                                backgroundColor: "transparent",
+                            },
                         }}
                     >
                         <Grid container spacing={2}>

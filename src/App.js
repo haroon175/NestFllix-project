@@ -13,15 +13,15 @@ import Video from './Components/VideoPlayer/Video';
 import MoviesPage from './Components/Movies/MoviesPage';
 import AllSeasons from './Components/Seasons/AllSeasons';
 import SeasonEpisodes from './Components/Seasons/SeasonEpisodes';
-// import TrailerWalls from './Components/Trailers/TrailerWalls';
+import TrailerWalls from './Components/Trailers/TrailerWalls';
 
 const App = () => {
   return (
     <Router>
       <Navbar/>
       <Routes> 
-        {/* <Route path='/' element={<TrailerWalls/>}/>        */}
-        <Route path="/" element={<MoviesList />} />
+        <Route path='/' element={<TrailerWalls/>}/>       
+        <Route path="/movies/dashboard" element={<MoviesList />} />
         <Route path='/videoPlay/:id' element={<VideoPlay/>}/>
         <Route path='/movies/:category' element={<MoviesPage/>}/>
         <Route path='/videoPlay' element={<Video/>}/>

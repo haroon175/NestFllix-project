@@ -83,7 +83,7 @@ const VideoPlay = () => {
             <Button
                 variant="contained"
                 sx={{ backgroundColor: '#950101', marginBottom: '5px' }}
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/movies/dashboard')}
             >
                 Back
             </Button>
@@ -130,7 +130,7 @@ const VideoPlay = () => {
                         variant="h5"
                         sx={{ color: "#950101", marginBottom: "10px", fontWeight: "bold" }}
                     >
-                        Recommended Movies
+                        𝑹𝒆𝒄𝒐𝒎𝒎𝒆𝒏𝒅𝒆𝒅 𝑴𝒐𝒗𝒊𝒆𝒔
                     </Typography>
 
                     {recommendations.length === 0 && (
@@ -144,8 +144,19 @@ const VideoPlay = () => {
                             border: "2px solid #950101", 
                             borderRadius: "8px", 
                             overflowY: "auto",
-                            maxHeight: "500px", 
+                            maxHeight: "450px", 
                             padding: "16px", 
+                            backgroundColor: "black",
+                            "&::-webkit-scrollbar": {
+                                width: "8px",
+                            },
+                            "&::-webkit-scrollbar-thumb": {
+                                backgroundColor: "black",
+                                borderRadius: "4px",
+                            },
+                            "&::-webkit-scrollbar-track": {
+                                backgroundColor: "transparent",
+                            },
                         }}
                     >
                         <Grid container spacing={2}>

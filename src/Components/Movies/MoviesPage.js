@@ -92,7 +92,7 @@ const MoviesPage = () => {
 
     return (
         <Container>
-            <Button variant='contained' sx={{backgroundColor:'#950101'}} onClick={()=> navigate('/')}>back</Button>
+            <Button variant='contained' sx={{backgroundColor:'#950101'}} onClick={()=> navigate('/movies/dashboard')}>back</Button>
             <Typography
                 variant="h4"
                 gutterBottom

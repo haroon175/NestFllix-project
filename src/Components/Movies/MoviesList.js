@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useNavigate } from 'react-router-dom';
-import Carousel from '../Carousel/Carousel';
+import Carousel from '../PopularMovies/Carousel';
 import MovieCarousels from './MovieCarousels';
 import LoadingComponent from '../Loader/LoadingComponent';
 const MoviesList = () => {
@@ -171,7 +171,7 @@ const MoviesList = () => {
         <Grid container spacing={4}>
           {filteredMovies.map((movie) => (
             <Grid item xs={12} sm={6} md={4} key={movie.id}>
-              <Card sx={{ boxShadow: 5 }}>
+              <Card sx={{ boxShadow: 5, borderRadius:'10px' }}>
                 <CardMedia
                   component="img"
                   height="200"
@@ -186,7 +186,7 @@ const MoviesList = () => {
                   }}
                 />
                 <CardContent>
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', color:'#950101'}}>
                     {movie.title}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" gutterBottom>

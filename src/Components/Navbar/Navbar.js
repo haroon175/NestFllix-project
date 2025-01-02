@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   AppBar,
-  Toolbar,
-  Typography,
+  Toolbar, 
   TextField,
   InputAdornment,
   IconButton,
@@ -23,7 +22,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../nest.png";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
+import HomeIcon from '@mui/icons-material/Home';
 
 
 const Navbar = () => {
@@ -90,9 +89,14 @@ const Navbar = () => {
   };
 
   const handleMovieClick = (movie) => {
-    navigate(`/videoPlay`, { state: { movie } });
+    if (movie.id) {
+      navigate(`/videoPlay/${movie.id}`, { state: { movie } });
+    } else {
+      navigate(`/videoPlay`, { state: { movie } });
+    }
     setSearchResults([]);
   };
+  
 
   const toggleDrawer = () => {
     setDrawerOpen((prev) => !prev);
@@ -150,158 +154,153 @@ const Navbar = () => {
     <ThemeProvider theme={theme}>
   <CssBaseline />
   <AppBar position="sticky" sx={{ backgroundColor: "black" }}>
-    <Toolbar>
-      {/* Logo */}
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        <img
-          src={Logo}
-          alt="logo"
-          style={{ height: "70px", width: "auto", objectFit: "contain", cursor: 'pointer' }}
-          onClick={() => navigate('/')}
-        />
-        {/* Home Tab
-      <Button
-        onClick={() => navigate('/movies/dashboard')}
-        sx={{
-          color: '#950101',
-          marginRight: '15px',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          textTransform: 'none',
-          '&:hover': {
-            backgroundColor: 'black',
-            color: '#950101',
-          },
+  <Toolbar>
+    {/* Logo and Home Tab */}
+    <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+      <img
+        src={Logo}
+        alt="logo"
+        style={{
+          height: "70px",
+          width: "auto",
+          objectFit: "contain",
+          cursor: "pointer",
         }}
-      >
-        Home
-      </Button> */}
-      </Typography>
-
-      
-
-      {/* Search Bar */}
-      <Box sx={{ flexGrow: 2 }}>
-        <TextField
-          variant="outlined"
-          size="small"
-          placeholder="Search movies..."
-          onChange={handleSearch}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: '#950101' }} />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            marginBottom: '5px',
-            marginRight: '5px',
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: '#950101',
-                borderRadius: '20px',
-              },
-              '&:hover fieldset': {
-                borderColor: '#950101',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#950101',
-              },
-            },
-            '& .MuiInputBase-input::placeholder': {
-              color: '#950101',
-            },
-          }}
-        />
-
-        {searchResults.length > 0 && (
-          <Box
-            sx={{
-              position: "absolute",
-              zIndex: 1,
-              backgroundColor: "#333",
-              borderRadius: 1,
-              boxShadow: 3,
-              width: '270px',
-              height: '200px',
-              overflowY: 'auto',
-            }}
-          >
-            <List>
-              {searchResults.map((movie) => (
-                <ListItem key={movie._id} onClick={() => handleMovieClick(movie)}>
-                  <ListItemText
-                    primary={movie.title}
-                    sx={{ color: 'white', cursor: 'pointer' }}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        )}
-      </Box>
-
-      {/* Menu Button for Mobile */}
+        onClick={() => navigate("/")}
+      />
       <IconButton
-        edge="end"
-        color="inherit"
-        onClick={toggleDrawer}
+        onClick={() => navigate("/movies/dashboard")}
         sx={{
-          display: { xs: 'flex', md: 'none' },
           color: "#950101",
-          alignItems: "center",
-          gap: 0.5,
-        }}
-      >
-        {drawerOpen ? (
-          <CloseIcon sx={{ color: "#950101" }} />
-        ) : (
-          <>
-            <WidgetsIcon sx={{ color: "#950101" }} />
-            <span style={{ fontSize: "0.75rem", color: "#950101" }}>Categories</span>
-          </>
-        )}
-      </IconButton>
-
-      {/* Button for Laptop screens */}
-      <Button
-        variant="outlined"
-        onClick={handleMenuClick}
-        sx={{
-          display: { xs: 'none', md: 'block' },
-          color: '#950101',
-          borderColor: '#950101',
-          fontSize: '14px',
-          '&:hover': {
-            borderColor: '#950101',
+          ml: 2,
+          "&:hover": {
+            backgroundColor: "transparent",
+            color: "#950101",
           },
-          marginRight: '5px',
-          borderRadius: '20px',
         }}
       >
-        <ArrowDropDownIcon sx={{ marginRight: '5px' }} />
-        <span>{activeCategory}</span>
-      </Button>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
-        {genres.map((genre) => (
-          <MenuItem
-            key={genre.id}
-            onClick={() => {
-              handleCategoryClick(genre.name, genre.id);
-              handleMenuClose();
-            }}
-          >
-            {genre.name}
-          </MenuItem>
-        ))}
-      </Menu>
-    </Toolbar>
-  </AppBar>
+        <HomeIcon sx={{ fontSize: "24px" }} />
+      </IconButton>
+    </Box>
+
+    {/* Search Bar */}
+    <Box sx={{ flexGrow: 2, position: "relative" }}>
+      <TextField
+        variant="outlined"
+        size="small"
+        placeholder="Search movies..."
+        onChange={handleSearch}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon sx={{ color: "#950101" }} />
+            </InputAdornment>
+          ),
+        }}
+        sx={{
+          width: "100%",
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#950101",
+              borderRadius: "20px",
+            },
+            "&:hover fieldset": {
+              borderColor: "#950101",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#950101",
+            },
+          },
+          "& .MuiInputBase-input::placeholder": {
+            color: "#950101",
+          },
+        }}
+      />
+      {searchResults.length > 0 && (
+        <Box
+          sx={{
+            position: "absolute",
+            zIndex: 1,
+            backgroundColor: "#333",
+            borderRadius: 1,
+            boxShadow: 3,
+            width: "100%",
+            maxHeight: "200px",
+            overflowY: "auto",
+            mt: 1,
+          }}
+        >
+          <List>
+            {searchResults.map((movie) => (
+              <ListItem
+                key={movie._id}
+                onClick={() => handleMovieClick(movie)}
+                sx={{ "&:hover": { backgroundColor: "#444" } }}
+              >
+                <ListItemText
+                  primary={movie.title}
+                  sx={{ color: "white", cursor: "pointer" }}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      )}
+    </Box>
+
+    {/* Menu Button for Mobile */}
+    <IconButton
+      edge="end"
+      color="inherit"
+      onClick={toggleDrawer}
+      sx={{
+        display: { xs: "flex", md: "none" },
+        color: "#950101",
+        ml: 2,
+      }}
+    >
+      {drawerOpen ? <CloseIcon /> : <WidgetsIcon />}
+    </IconButton>
+
+    {/* Dropdown for Laptop Screens */}
+    <Button
+      variant="outlined"
+      onClick={handleMenuClick}
+      sx={{
+        display: { xs: "none", md: "flex" },
+        color: "#950101",
+        borderColor: "#950101",
+        borderRadius: "20px",
+        ml: 2,
+        "&:hover": {
+          borderColor: "#950101",
+        },
+      }}
+    >
+      <ArrowDropDownIcon sx={{ mr: 1 }} />
+      {activeCategory}
+    </Button>
+    <Menu
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      onClose={handleMenuClose}
+      sx={{ mt: 1 }}
+    >
+      {genres.map((genre) => (
+        <MenuItem
+          key={genre.id}
+          onClick={() => {
+            handleCategoryClick(genre.name, genre.id);
+            handleMenuClose();
+          }}
+        >
+          {genre.name}
+        </MenuItem>
+      ))}
+    </Menu>
+  </Toolbar>
+</AppBar>
+
 
   {/* Drawer for Mobile Screens */}
   <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>

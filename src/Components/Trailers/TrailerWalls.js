@@ -1,28 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Box, Typography, IconButton } from "@mui/material";
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { Container } from '@mui/material';
+import LoadingComponent from '../Loader/LoadingComponent';
 
 const TrailerWalls = () => {
   const [trailers, setTrailers] = useState([]);
-  const [currentTrailerIndex, setCurrentTrailerIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [currentTrailer, setCurrentTrailer] = useState(0);
   const containerRef = useRef(null);
 
-  // Fetch trailers from API
   const fetchTrailers = async () => {
     try {
-      setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/tmdb/all-trailers`);
-      const data = await response.json();
-      if (Array.isArray(data)) {
-        setTrailers(data);
-      } else {
-        console.error("Unexpected data format:", data);
-      }
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tmdb/all-trailers`);
+      setTrailers(response.data || []);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching trailers:", error);
-    } finally {
       setLoading(false);
     }
   };
@@ -31,117 +24,77 @@ const TrailerWalls = () => {
     fetchTrailers();
   }, []);
 
-  // Handle scroll event to update the current trailer index
-  const handleScroll = (event) => {
-    const windowHeight = window.innerHeight;
-    const scrollTop = window.scrollY;
-    const newIndex = Math.round(scrollTop / windowHeight);
-    if (newIndex !== currentTrailerIndex && newIndex >= 0 && newIndex < trailers.length) {
-      setCurrentTrailerIndex(newIndex);
-    }
+ 
+
+  const handleScroll = (e) => {
+    const { scrollTop, clientHeight } = e.target;
+    const index = Math.round(scrollTop / clientHeight);
+    setCurrentTrailer(index);
   };
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("wheel", handleScroll);
-    }
-    return () => {
-      if (container) {
-        container.removeEventListener("wheel", handleScroll);
-      }
-    };
-  }, [currentTrailerIndex, trailers.length]);
+  const getIframeWidth = () => {
+    const screenWidth = window.innerWidth;
+    return screenWidth <= 768 ? "90%" : "60%";
+  };
 
+  if (loading) {
+    return (
+      <Container
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <LoadingComponent />
+      </Container>
+    )
+  }
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'ArrowUp') {
-        setCurrentTrailerIndex(Math.max(0, currentTrailerIndex - 1));
-      } else if (event.key === 'ArrowDown') {
-        setCurrentTrailerIndex(Math.min(trailers.length - 1, currentTrailerIndex + 1));
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [currentTrailerIndex, setCurrentTrailerIndex, trailers.length]);
+  if (trailers.length === 0) {
+    return <p>No trailers available</p>;
+  }
 
   return (
-    <Box
+    <div
       ref={containerRef}
-      sx={{
-        width: "100%",
-        // height: "100vh",
-        // overflowY: "auto",
-        // scrollSnapType: "y mandatory",
-        backgroundColor: "#000",
+      className="scroll-container"
+      style={{
+        height: "100vh",
+        overflowY: "scroll",
+        scrollSnapType: "y mandatory",
+        position: "relative",
       }}
+      onScroll={handleScroll}
     >
       {trailers.map((trailer, index) => (
-        <Box
-          key={trailer.id}
-          sx={{
-            width: "100%",
+        <div
+          key={index}
+          style={{
             height: "100vh",
-            position: "relative",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             scrollSnapAlign: "start",
-            display: index === currentTrailerIndex ? "block" : "none",
-            textAlign: "center",
+            background: "#000",
+            color: "#fff",
+            position: "relative",
           }}
         >
-          {/* Arrow buttons */}
-          <Box sx={{ position: "absolute", right: "10px", top: "10px" }}>
-            <IconButton onClick={() => setCurrentTrailerIndex(Math.max(0, currentTrailerIndex - 1))}>
-              <ArrowUpwardIcon style={{ color: "#fff" }} />
-            </IconButton>
-            <IconButton onClick={() => setCurrentTrailerIndex(Math.min(trailers.length - 1, currentTrailerIndex + 1))}>
-              <ArrowDownwardIcon style={{ color: "#fff" }} />
-            </IconButton>
-          </Box>
-          {trailer?.trailer?.trailer.links ? (
-            <iframe
-              src={trailer.trailer.trailer.links}
-              title={trailer.title}
-              width="25%"
-              height="90%"
-              style={{
-                objectFit: "cover",
-                borderRadius: "10px",
-                border: "1px solid #950101",
-              }}
-              allow="autoplay; fullscreen; picture-in-picture"
-              muted
-              autoplay
-              playsinline
-            />
-          ) : (
-            <Typography
-              variant="h6"
-              color="error"
-              sx={{
-                position: "absolute",
-                bottom: "20px",
-                left: "10px",
-                color: "#fff",
-              }}
-            >
-              Trailer not available
-            </Typography>
-          )}
+          <iframe
+            src={`https://www.youtube.com/embed/${trailer.trailer.trailer.id}?autoplay=${currentTrailer === index ? 1 : 0}`}
+            title={trailer.title}
+            width={getIframeWidth()}
+            height="85%"
+            style={{ borderRadius: '10px', border: '1px solid #950101', marginTop: '-60px' }}
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          />
 
-
-        </Box>
+        </div>
       ))}
-      {loading && (
-        <Typography sx={{ textAlign: "center", margin: "20px", color: "#fff" }}>
-          Loading...
-        </Typography>
-      )}
-    </Box>
+    </div>
   );
 };
 
