@@ -96,13 +96,17 @@ const SeasonEpisodes = () => {
                                 }}
                                 style={{ marginTop: '10px' }}
                                 onClick={() =>
-                                    navigate('/videoPlay', {
+                                    navigate('/movie/season/episodes', {
                                         state: {
-                                            movie: {
+                                            selectedEpisode: {
+                                                id: episode._id,
                                                 title: episode.title,
                                                 description: episode.description,
                                                 links: episode.links,
+                                                episodeNumber:episode.episodeNumber,
+                                                poster:episode.poster
                                             },
+                                            remainingEpisodes: episodes.filter((ep) => ep._id !== episode._id),
                                         },
                                     })
                                 }
